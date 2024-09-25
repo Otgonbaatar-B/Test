@@ -1,9 +1,9 @@
-import { HomePage } from "./page/page";
+import { Head } from "@/components/head/Head";
 
 export default function Home() {
   return (
     <div>
-      <HomePage />
+      <Head />
     </div>
   );
 }
