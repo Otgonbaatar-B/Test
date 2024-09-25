@@ -1,49 +1,88 @@
 import express from "express";
 import bodyParser from "body-parser";
-import bcrypt from "bcrypt";
+import cors from "cors";
+import fs from "fs";
+import { error } from "console";
 
 const port = 8888;
-const server = express();
-const saltRounds = 10;
-const users = [];
+const app = express();
 
-server.use(bodyParser.json());
+app.use(bodyParser.json());
+app.use(cors());
 
-server.get("/", (request, response) => {
-  response.send(`GET huselt irlee ${users}`);
+app.get("/", (request, response) => {
+  response.send("Hello GET huselt irlee");
 });
 
-server.post("/register", async (request, response) => {
-  const { email, password } = request.body;
+app.post("/sign-in", (request, response) => {
+  const { name, password } = request.body;
 
-  if (!email || !password) {
-    return response.status(400).send("Email and password are required.");
-  }
+  fs.readFile("./data/user.json", "utf-8", (readError, data) => {
+    if (readError) {
+      response.json({
+        success: false,
+        error: error,
+      });
+    }
 
-  const userExists = users.some((user) => user.email === email);
-  if (userExists) {
-    return response.status(409).send("User already exists.");
-  }
+    let savedData = data ? JSON.parse(data) : [];
 
-  try {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const registeredUser = savedData.filter(
+      (user) => user.name === name && user.password === password
+    );
 
-    users.push({ email, password: hashedPassword });
-    response.status(201).send("User registered successfully.");
-  } catch (error) {
-    response.status(500).send("Error registering user.");
-  }
+    if (registeredUser.length > 0) {
+      response.json({
+        success: true,
+        user: registeredUser[0],
+      });
+    } else {
+      response.json({
+        success: false,
+      });
+    }
+  });
 });
 
-server.put("/", (request, response) => {
-  response.send("PUT huselt irlee");
+app.post("/sign-up", (request, response) => {
+  const { name, email, password } = request.body;
+
+  fs.readFile("./data/user.json", "utf-8", (readError, data) => {
+    let savedData = data ? JSON.parse(data) : [];
+
+    if (readError) {
+      response.json({
+        success: false,
+        error: error,
+      });
+    }
+
+    console.log(data);
+
+    const newUser = {
+      id: Date.now().toString(),
+      name: name,
+      email: email,
+      password: password,
+    };
+    savedData.push(newUser);
+
+    fs.writeFile("./data/user.json", JSON.stringify(savedData), (error) => {
+      if (error) {
+        response.json({
+          success: false,
+          error: error,
+        });
+      } else {
+        response.json({
+          success: true,
+          user: newUser,
+        });
+      }
+    });
+  });
 });
 
-server.delete("/", (request, response) => {
-  response.send("DELETE huselt irlee");
-});
-
-server.listen(port, () => {
-  console.log(`Server ajillaj ehellee http://localhost:${port}`);
-  console.log(users);
+app.listen(port, () => {
+  console.log(`Server ajillaj bn http://localhost:${port}`);
 });
