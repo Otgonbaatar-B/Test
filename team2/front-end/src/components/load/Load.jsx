@@ -15,8 +15,8 @@ const BlueLoader = () => {
     border: "4px solid #f3f3f3",
     borderTop: "4px solid blue",
     borderRadius: "50%",
-    width: "60px",
-    height: "60px",
+    width: "32px",
+    height: "32px",
     animation: "spin 2s linear infinite",
   };
 
