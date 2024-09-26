@@ -1,5 +1,5 @@
 import { HeadIcon } from "@/app/svg/Head";
-import { Head } from "@/components/head/Head";
+
 import Link from "next/link";
 export const HomePage = () => {
   return (
@@ -48,9 +48,11 @@ export const HomePage = () => {
                   className=" w-[384px] h-[48px] bg-[#F3F4F6] pl-10 rounded-xl border border-gray-300"
                   placeholder="Re-password"
                 />
-                <button className="text-white text-[20px] font-bold bg-[#0166FF] hover:bg-blue-400 rounded-[20px]  w-[384px] h-[48px] ">
-                  Sign up
-                </button>
+                <Link href={`/load`}>
+                  <button className="text-white text-[20px] font-bold bg-[#0166FF] hover:bg-blue-400 rounded-[20px]  w-[384px] h-[48px] ">
+                    Sign up
+                  </button>
+                </Link>
               </div>
               <div className="flex pt-10 gap-5">
                 <p>Already have account?</p>

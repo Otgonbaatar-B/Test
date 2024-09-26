@@ -32,9 +32,11 @@ export const Head = () => {
                   className=" w-[384px] h-[48px] bg-[#F3F4F6] pl-10 rounded-xl border border-gray-300"
                   placeholder="Password"
                 />
-                <button className="text-white text-[20px] font-bold bg-[#0166FF] hover:bg-blue-400 rounded-[20px]  w-[384px] h-[48px] ">
-                  Log in
-                </button>
+                <Link href={`/load`}>
+                  <button className="text-white text-[20px] font-bold bg-[#0166FF] hover:bg-blue-400 rounded-[20px]  w-[384px] h-[48px] ">
+                    Log in
+                  </button>
+                </Link>
               </div>
               <div className="flex pt-10 gap-5">
                 <p>Don’t have account?</p>
